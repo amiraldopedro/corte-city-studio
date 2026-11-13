@@ -377,7 +377,7 @@ function visibilidade(m) {
 }
 const dataDe = m => m.postado_em || m.feito_em;
 const postados = tipo => todos().filter(m => ["pronto", "postado"].includes(m.status) || (m.status === "removido" && m.youtube_id))
-  .filter(m => tipo === "short" ? ["short", "noticia"].includes(m.tipo || "short") : ["dia", "top10", "longo", "serie"].includes(m.tipo))
+  .filter(m => tipo === "short" ? ["short", "noticia"].includes(m.tipo || "short") : ["dia", "top10", "longo", "serie", "narrado"].includes(m.tipo))
   .sort((a, b) => (dataDe(b) || "").localeCompare(dataDe(a) || ""));
 const aRevisar = () => postados("short").concat(postados("comp")).filter(m => m.status === "pronto").sort((a, b) => (dataDe(a) || "").localeCompare(dataDe(b) || ""));
 const fila = () => todos().filter(m => m.status === "novo").sort((a, b) => (!!b.prioridade - !!a.prioridade) || (b.score - a.score));
@@ -644,10 +644,11 @@ function agoraLocal(horas = 2) { const d = new Date(Date.now() + horas * 36e5); 
 document.addEventListener("click", e => {
   const b = e.target.closest("[data-acao]"); if (!b) return;
   const {acao, id, login, nome, n} = b.dataset, m = todos().find(x => x.id === id), canal = S.canal;
-  if (acao === "youtube") return dialogo(`<form><h2 id="dlgTitulo">Cortes de vídeos do YouTube</h2><p>Cole links de vídeos ou lives (um por linha). O robô do seu Mac baixa só os melhores trechos (os mais repetidos pelo público) e a máquina faz os Shorts. O Mac precisa estar ligado.</p><div class="campo"><label for="dlgYt">Links do YouTube</label><textarea id="dlgYt" rows="4" placeholder="https://www.youtube.com/watch?v=…" style="width:100%;font:inherit;padding:10px;border-radius:10px"></textarea></div>${botoesDlg("Mandar pro robô")}</form>`,
+  if (acao === "youtube") return dialogo(`<form><h2 id="dlgTitulo">Cortes de vídeos do YouTube</h2><p>Cole links de vídeos ou lives (um por linha). O robô do seu Mac baixa só os melhores trechos (os mais repetidos pelo público) e a máquina faz os Shorts. O Mac precisa estar ligado.</p><div class="campo"><label for="dlgYt">Links do YouTube</label><textarea id="dlgYt" rows="4" placeholder="https://www.youtube.com/watch?v=…" style="width:100%;font:inherit;padding:10px;border-radius:10px"></textarea></div><div class="campo"><label><input type="checkbox" id="dlgBib"> Guardar inteiro na biblioteca de imagens (trailers oficiais, pra usar de fundo nos vídeos narrados)</label></div>${botoesDlg("Mandar pro robô")}</form>`,
     d => { const links = d.querySelector("#dlgYt").value.split(/\s+/).filter(l => /(youtube\.com|youtu\.be)\//.test(l)).join(" ");
            if (!links) return toast("Nenhum link do YouTube encontrado.");
-           pedir("Na fila do robô do Mac. Os cortes aparecem depois que ele baixar os trechos.", "youtube.yml", {acao: "pedir", links}); });
+           const bib = d.querySelector("#dlgBib").checked;
+           pedir(bib ? "Na fila do robô: ele guarda o vídeo inteiro na biblioteca." : "Na fila do robô do Mac. Os cortes aparecem depois que ele baixar os trechos.", "youtube.yml", {acao: bib ? "biblioteca" : "pedir", links}); });
   if (acao === "post-x") return dialogo(`<form><h2 id="dlgTitulo">Transformar posts do X em Shorts</h2><p>Cole um ou mais links de posts sobre GTA 6 (um por linha). A máquina lê o post, escreve a narração com as próprias palavras, dá o crédito do autor e posta. Vazamento e conteúdo adulto são barrados.</p><div class="campo"><label for="dlgLinks">Links dos posts</label><textarea id="dlgLinks" rows="4" placeholder="https://x.com/RockstarGames/status/…" style="width:100%;font:inherit;padding:10px;border-radius:10px"></textarea></div>${botoesDlg("Fazer os Shorts")}</form>`,
     d => { const links = d.querySelector("#dlgLinks").value.split(/\s+/).filter(l => /(x|twitter)\.com\/.+\/status\//.test(l)).join(" ");
            if (!links) return toast("Nenhum link de post do X encontrado.");
