@@ -546,7 +546,7 @@ function telaPainel() {
       <h2>Saúde da máquina</h2>
       <div class="saude">
         ${rod ? `<a class="saude-linha ${rod.rodando ? "roda" : rod.ok ? "ok" : "ruim"}" href="${esc(rod.url)}" target="_blank" rel="noopener" style="text-decoration:none"><i></i><p>${rod.rodando ? "Rodada acontecendo agora" : rod.ok ? "Última rodada deu certo" : "A última rodada falhou"}<span>${quando(rod.quando)}</span></p></a>` : ""}
-        <div class="saude-linha ${roboPendentes().length ? "roda" : "ok"}"><i></i><p>Robô do Mac: ${roboPendentes().length ? `${roboPendentes().length} download${roboPendentes().length > 1 ? "s" : ""} na fila` : "fila limpa"}<span>${rErros.length ? rErros.length + " com erro · " : ""}<a href="#fila">ver a fila</a></span></p></div>
+        ${linhaRobo(rErros)}
         ${erros.length ? `<div class="saude-linha ruim"><i></i><p>${erros.length} vídeo${erros.length > 1 ? "s" : ""} com erro na edição<span>${esc(erros[0].titulo || erros[0].id)}</span></p></div>` : ""}
         ${pr.length ? `<div class="saude-linha roda"><i></i><p>${pr.length} pronto${pr.length > 1 ? "s" : ""} esperando você postar<span><a href="#conteudo">abrir conteúdo</a></span></p></div>` : ""}
       </div>
@@ -555,6 +555,16 @@ function telaPainel() {
       <a class="btn btn-borda btn-sm" style="margin-top:10px" href="#fila">Abrir a fila</a>
     </section>
   </div>`;
+}
+function linhaRobo(rErros) {
+  const visto = S.robo.robo?.visto_em, pend = roboPendentes().length;
+  const horas = visto ? (Date.now() - new Date(visto)) / 36e5 : null;
+  const sumiu = horas !== null && horas > 2.5;
+  const cls = sumiu ? "ruim" : pend ? "roda" : "ok";
+  const txt = sumiu ? "Robô do Mac sumiu" : `Robô do Mac: ${pend ? `${pend} download${pend > 1 ? "s" : ""} na fila` : "fila limpa"}`;
+  const det = sumiu ? `visto ${quando(visto)} · o Mac pode estar desligado, dormindo ou sem o SSD`
+            : `${visto ? "visto " + quando(visto) + " · " : ""}${rErros.length ? rErros.length + " com erro · " : ""}<a href="#fila">ver a fila</a>`;
+  return `<div class="saude-linha ${cls}"><i></i><p>${txt}<span>${det}</span></p></div>`;
 }
 function linhaProx(m) {
   const q = quandoPublica(m), d = q ? new Date(q) : null;
