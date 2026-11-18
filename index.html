@@ -612,7 +612,7 @@ function linhaVideo(m) {
 
 /* ---------- FILA ---------- */
 function tituloChat(m) { return (m.titulos_chat || []).find(t => t && t.length > 3) || "sem título do público"; }
-const PLAT = {youtube: "YT", tiktok: "TK", reels: "IG", x: "X", kick: "KICK", facebook: "FB", live: "LIVE"};
+const PLAT = {youtube: "YT", tiktok: "TK", reels: "IG", x: "X", kick: "KICK", facebook: "FB", twitch: "TW", live: "LIVE", gringo: "🌎"};
 function rotuloRobo(m) {
   const s = m.status || "";
   if (s === "esperando" || s === "na_fila") return m.origem === "live" ? "live esperando o Mac baixar os melhores trechos" : "esperando o Mac baixar os melhores trechos";
@@ -646,7 +646,7 @@ function telaFila() {
     <h2>Robô do Mac ${rb.length ? `<span class="cont">${rb.length} na fila</span>` : `<span class="cont">fila limpa</span>`}</h2>
     <p class="meta">Downloads que rodam no seu Mac (ele precisa estar ligado). Lives e virais entram aqui antes de virar vídeo.</p>
     ${rb.concat(re).concat(roboItens().filter(m => (m.status || "").endsWith("_ok") || m.status === "modelado").slice(0, 4)).map(m => `
-      <div class="robo-item"><span class="plat" style="color:${m.status === "erro" ? "var(--corte)" : "var(--ac)"}">${PLAT[m.origem === "live" ? "live" : m.plataforma] || "YT"}</span>
+      <div class="robo-item"><span class="plat" style="color:${m.status === "erro" ? "var(--corte)" : "var(--ac)"}">${PLAT[m.gringo ? "gringo" : m.origem === "live" ? "live" : m.plataforma] || "YT"}</span>
         <p><b>${esc(m.titulo || m.link || m.id)}</b>
            <span>${esc(m.canal_nome || "")}${m.views_yt ? ` · ${fmt(m.views_yt)} views` : ""} · ${rotuloRobo(m)} · ${quando(m.atualizado_em || m.pedido_em)}</span>
            ${m.status === "erro" ? `<span class="erro-txt" title="${esc(m.erro || "")}">${esc((m.erro || "erro").slice(0, 120))}</span>` : ""}</p>
@@ -775,6 +775,7 @@ const dlgMandar = () => dialogo(`<form><h2 id="dlgTitulo">Mandar links pra máqu
   <div class="campo"><label for="dlgTipo">O que fazer com eles</label><select id="dlgTipo">
     <option value="pedir">Cortar os melhores momentos (vídeo ou live do YouTube)</option>
     <option value="modelo">Refazer com a nossa voz e edição (Short/TikTok/Reels/X viral)</option>
+    <option value="gringo">Gringo legendado: rage/reação com legenda em PT, estilo Twitter (clipe de YouTube/Twitch/TikTok/X)</option>
     <option value="biblioteca">Guardar inteiro na biblioteca de imagens (trailer oficial)</option>
     <option value="noticia">Post do X → Short de notícia (com crédito)</option>
   </select></div>${botoesDlg("Mandar pro robô")}</form>`,
@@ -784,10 +785,10 @@ const dlgMandar = () => dialogo(`<form><h2 id="dlgTitulo">Mandar links pra máqu
     const soYt = l => /(youtube\.com|youtu\.be)\//.test(l);
     const links = (tipo === "pedir" || tipo === "biblioteca" ? tudo.filter(soYt)
       : tipo === "noticia" ? tudo.filter(l => /(x|twitter)\.com\/.+\/status\//.test(l))
-      : tudo.filter(l => /(youtube\.com|youtu\.be|tiktok\.com|instagram\.com|x\.com|twitter\.com|kick\.com|fb\.watch|facebook\.com)\//.test(l))).join(" ");
-    if (!links) { toast(tipo === "noticia" ? "Nenhum link de post do X encontrado." : tipo === "modelo" ? "Nenhum link de vídeo reconhecido." : "Nenhum link do YouTube encontrado."); return false; }
+      : tudo.filter(l => /(youtube\.com|youtu\.be|tiktok\.com|instagram\.com|x\.com|twitter\.com|kick\.com|twitch\.tv|fb\.watch|facebook\.com)\//.test(l))).join(" ");
+    if (!links) { toast(tipo === "noticia" ? "Nenhum link de post do X encontrado." : (tipo === "modelo" || tipo === "gringo") ? "Nenhum link de vídeo reconhecido." : "Nenhum link do YouTube encontrado."); return false; }
     if (tipo === "noticia") pedir("Pedido enviado. Os Shorts dos posts ficam prontos em uns 10 minutos.", "noticias.yml", {links});
-    else pedir(tipo === "modelo" ? "Na fila: o Mac baixa e a máquina refaz com a nossa voz." : tipo === "biblioteca" ? "Na fila: o robô guarda o vídeo inteiro na biblioteca." : "Na fila do robô do Mac. Os cortes aparecem depois que ele baixar os trechos.", "youtube.yml", {acao: tipo, links});
+    else pedir(tipo === "gringo" ? "Na fila: o Mac baixa e a máquina legenda em português no estilo Twitter." : tipo === "modelo" ? "Na fila: o Mac baixa e a máquina refaz com a nossa voz." : tipo === "biblioteca" ? "Na fila: o robô guarda o vídeo inteiro na biblioteca." : "Na fila do robô do Mac. Os cortes aparecem depois que ele baixar os trechos.", "youtube.yml", {acao: tipo, links});
   });
 
 document.addEventListener("click", e => {
