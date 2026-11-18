@@ -137,6 +137,28 @@ tr:hover .vid-acoes,tr:focus-within .vid-acoes{opacity:1}
 .chip.agendado i{background:var(--ac)}
 .chip.removido{color:var(--apagado)} .chip.removido i{background:var(--corte)}
 .chip.pendente i{background:var(--ac);animation:pisca 1s infinite}
+.chip.erro i{background:var(--corte)} .chip.erro{color:var(--corte)}
+.prox{display:flex;gap:12px;align-items:center;padding:10px 0;border-top:1px solid var(--linha)}
+.prox:first-of-type{border-top:0}
+.prox .hora{flex:none;width:74px;text-align:center;background:var(--placa);border-radius:var(--r1);padding:7px 4px;line-height:1.15}
+.prox .hora b{display:block;font:17px Anton,sans-serif;color:var(--ac)}
+.prox .hora span{font-size:10.5px;color:var(--apagado)}
+.prox p{flex:1;min-width:0}
+.prox p b{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-weight:600}
+.prox p span{display:block;color:var(--apagado);font-size:12px;margin-top:2px}
+.saude{display:flex;flex-direction:column;gap:10px}
+.saude-linha{display:flex;align-items:center;gap:10px;background:var(--placa);border-radius:var(--r1);padding:10px 12px}
+.saude-linha i{width:9px;height:9px;border-radius:50%;background:var(--apagado);flex:none}
+.saude-linha.ok i{background:var(--ok)} .saude-linha.roda i{background:var(--ac);animation:pisca 1.2s infinite} .saude-linha.ruim i{background:var(--corte)}
+.saude-linha p{flex:1;min-width:0} .saude-linha span{display:block;color:var(--apagado);font-size:12px}
+.grupo-robo{margin-top:26px}
+.grupo-robo h2{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+.robo-item{display:flex;gap:14px;align-items:center;padding:13px 4px;border-bottom:1px solid var(--linha)}
+.robo-item .plat{flex:none;width:40px;height:40px;border-radius:var(--r1);display:grid;place-items:center;background:var(--placa2);font-size:10.5px;font-weight:800;letter-spacing:.4px}
+.robo-item p{flex:1;min-width:0}
+.robo-item p b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600}
+.robo-item p span{color:var(--apagado);font-size:12.5px}
+.robo-item .erro-txt{color:var(--aviso);font-size:12px;display:block;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 @keyframes pisca{50%{opacity:.2}}
 .aviso-linha{color:var(--aviso);font-size:12px;margin-top:4px}
 
@@ -203,6 +225,7 @@ tr:hover .vid-acoes,tr:focus-within .vid-acoes{opacity:1}
   .marca{min-width:0}.marca-studio{display:none}
 }
 @media (max-width:720px){
+  .prox .hora{width:60px}
   :root{--top:56px}
   .busca{display:none}
   .marca-nome{font-size:19px}
@@ -244,12 +267,11 @@ tr:hover .vid-acoes,tr:focus-within .vid-acoes{opacity:1}
   </a>
   <label class="busca">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-    <input id="busca" type="search" placeholder="Pesquisar nos vídeos e streamers" autocomplete="off">
+    <input id="busca" type="search" placeholder="Pesquisar nos vídeos e streamers  ( / )" autocomplete="off">
   </label>
   <div class="topo-acoes">
-    <button class="btn btn-borda" data-acao="youtube" title="Cole links de vídeos ou lives do YouTube e a máquina faz os cortes dos melhores momentos"><span>YouTube → Cortes</span></button>
-    <button class="btn btn-borda" data-acao="post-x" title="Cole links de posts do X sobre GTA 6 e a máquina transforma em Short"><span>Post do X → Short</span></button>
-    <button class="btn btn-ac" id="btnRodar" data-acao="rodar" title="Caça clipes e monta o próximo Short agora"><i class="rec"></i><span>Rodar agora</span></button>
+    <button class="btn btn-borda" data-acao="mandar" title="Cole links de YouTube, TikTok, Reels ou X e escolha o que a máquina faz com eles"><span>Mandar links</span>&nbsp;＋</button>
+    <button class="btn btn-ac" id="btnRodar" data-acao="rodar" title="Caça clipes e monta os próximos vídeos agora"><i class="rec"></i><span>Rodar agora</span></button>
   </div>
 </header>
 
@@ -268,7 +290,7 @@ tr:hover .vid-acoes,tr:focus-within .vid-acoes{opacity:1}
   <div class="nav">
     <a href="#painel" data-rota="painel"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg><span>Painel</span></a>
     <a href="#conteudo" data-rota="conteudo"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m10 9 5 3-5 3z" fill="currentColor"/></svg><span>Conteúdo</span><b class="badge" id="badgeRevisao" hidden></b></a>
-    <a href="#fila" data-rota="fila"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h16M4 12h16M4 18h10"/></svg><span>Fila</span></a>
+    <a href="#fila" data-rota="fila"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h16M4 12h16M4 18h10"/></svg><span>Fila</span><b class="badge" id="badgeRobo" hidden></b></a>
     <a href="#streamers" data-rota="streamers"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.8c1.8.8 3 2.5 3.5 5.2"/></svg><span>Streamers</span></a>
     <a href="#ajustes" data-rota="ajustes"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg><span>Configurações</span></a>
   </div>
@@ -285,11 +307,12 @@ tr:hover .vid-acoes,tr:focus-within .vid-acoes{opacity:1}
 <script>
 "use strict";
 const REPO = "amiraldopedro/corte-city-maquina";
-const CANAIS = {br: {nome: "Corte City", p1: "CORTE", p2: "CITY", yt: "@cortecity", fuso: "America/Sao_Paulo"},
-                en: {nome: "Clip City", p1: "CLIP", p2: "CITY", yt: "@theclipcit", fuso: "America/New_York"}};
+const CANAIS = {br: {nome: "Corte City", p1: "CORTE", p2: "CITY", yt: "@cortecity"},
+                en: {nome: "Clip City", p1: "CLIP", p2: "CITY", yt: "@theclipcit"}};
 const CORES = ["#C8FF2E", "#2EE6FF", "#FF3B4E", "#FFB547", "#B794FF", "#5CF2A8", "#FF7AC6"];
-const S = {canal: guardar("cc_canal") || "br", dados: {br: {momentos: {}}, en: {momentos: {}}}, cfg: null,
-           demo: false, aba: "revisar", busca: "", pendentes: {}, thumbs: {}, carregadoEm: null, erro: null};
+const S = {canal: guardar("cc_canal") || "br", dados: {br: {momentos: {}}, en: {momentos: {}}}, robo: {momentos: {}},
+           cfg: null, runs: [], demo: false, aba: guardar("cc_aba") || "agendados", busca: "", pendentes: {},
+           thumbs: {}, carregadoEm: null, erro: null, carregando: false};
 
 /* ---------- utilidades ---------- */
 function guardar(k, v) { try { if (v === undefined) return localStorage.getItem(k); if (v === null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch (e) { return null; } }
@@ -298,26 +321,35 @@ const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&": "&amp;", "<": "
 const fmt = n => n >= 1e6 ? (n / 1e6).toFixed(1).replace(".", ",") + " mi" : n >= 1e4 ? Math.round(n / 1e3) + " mil" : n >= 1e3 ? (n / 1e3).toFixed(1).replace(".", ",") + " mil" : String(n ?? 0);
 const inicial = s => (s || "?").trim().charAt(0).toUpperCase();
 function corDe(s) { let h = 0; for (const c of s || "") h = (h * 31 + c.charCodeAt(0)) >>> 0; return CORES[h % CORES.length]; }
+const DIA = 864e5;
 function quando(iso) {
   if (!iso) return "—";
-  const d = new Date(iso), agora = new Date(), dif = (agora - d) / 1000;
-  if (dif >= 0 && dif < 3600) return `há ${Math.max(1, Math.round(dif / 60))} min`;
-  if (dif >= 0 && dif < 86400) return `há ${Math.round(dif / 3600)} h`;
-  return d.toLocaleDateString("pt-BR", {day: "2-digit", month: "short"}) + " " + d.toLocaleTimeString("pt-BR", {hour: "2-digit", minute: "2-digit"});
+  const d = new Date(iso); if (isNaN(d)) return "—";
+  const dif = (Date.now() - d) / 1000, hm = d.toLocaleTimeString("pt-BR", {hour: "2-digit", minute: "2-digit"});
+  if (dif >= 0 && dif < 60) return "agora mesmo";
+  if (dif >= 0 && dif < 3600) return `há ${Math.round(dif / 60)} min`;
+  if (dif >= 0 && dif < 7 * 3600) return `há ${Math.round(dif / 3600)} h`;
+  if (dif < 0 && -dif < 3600) return `em ${Math.max(1, Math.round(-dif / 60))} min`;
+  const h0 = new Date(); h0.setHours(0, 0, 0, 0);
+  const diaD = Math.floor((d - h0) / DIA);
+  if (diaD === 0) return `hoje ${hm}`;
+  if (diaD === 1) return `amanhã ${hm}`;
+  if (diaD === -1) return `ontem ${hm}`;
+  return d.toLocaleDateString("pt-BR", {day: "2-digit", month: "short"}) + " " + hm;
 }
+function dur(seg) { if (!seg) return ""; seg = Math.round(seg); return `${Math.floor(seg / 60)}:${String(seg % 60).padStart(2, "0")}`; }
 function toast(msg) { const t = $("#toast"); t.textContent = msg; t.classList.add("ver"); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove("ver"), 3800); }
 
 /* ---------- GitHub ---------- */
 const token = () => guardar("cc_token");
 async function gh(caminho, opts = {}) {
-  const r = await fetch(`https://api.github.com/repos/${REPO}/${caminho}`, {...opts,
+  return fetch(`https://api.github.com/repos/${REPO}/${caminho}`, {...opts,
     headers: {Authorization: "Bearer " + token(), Accept: opts.accept || "application/vnd.github+json", ...(opts.headers || {})}});
-  return r;
 }
 async function lerArquivo(caminho, tipo = "texto") {
   const r = await gh(`contents/${caminho}?ref=main&t=${Date.now()}`, {accept: "application/vnd.github.raw+json"});
   if (r.status === 404) return null;
-  if (r.status === 401 || r.status === 403) throw new Error("token");
+  if (r.status === 401) throw new Error("token");
   if (!r.ok) throw new Error("http " + r.status);
   return tipo === "blob" ? r.blob() : r.text();
 }
@@ -330,24 +362,38 @@ async function disparar(workflow, inputs) {
 }
 
 async function carregar() {
+  if (S.carregando) return; S.carregando = true;
   S.erro = null;
-  if (!token()) { S.demo = true; montarDemo(); desenhar(); return; }
+  if (!token()) { S.demo = true; montarDemo(); S.carregando = false; desenhar(); return; }
   S.demo = false;
+  const pega = p => p.status === "fulfilled" ? p.value : null;
   try {
-    const [cfg, br, en] = await Promise.all([lerArquivo("config.yaml"), lerArquivo("estado/br.json"), lerArquivo("estado/en.json")]);
+    const [cfg, br, en, robo, runs] = await Promise.allSettled([
+      lerArquivo("config.yaml"), lerArquivo("estado/br.json"), lerArquivo("estado/en.json"),
+      lerArquivo("estado/youtube.json"),
+      gh("actions/runs?per_page=12").then(r => r.ok ? r.json() : null).catch(() => null),
+    ]).then(rs => rs.map(pega));
+    if (br === null && cfg === null) throw new Error("token");
     S.cfg = cfg ? jsyaml.load(cfg) : {canais: [], bloqueados: []};
     S.dados.br = br ? JSON.parse(br) : {momentos: {}};
     S.dados.en = en ? JSON.parse(en) : {momentos: {}};
+    S.robo = robo ? JSON.parse(robo) : {momentos: {}};
+    S.runs = runs?.workflow_runs || [];
     S.carregadoEm = new Date();
   } catch (e) {
     S.erro = e.message === "token" ? "O token não abriu o repositório. Confira se ele dá acesso ao corte-city-maquina." : "Não consegui ler os dados agora. Tente atualizar em instantes.";
     S.demo = true; montarDemo();
   }
+  S.carregando = false;
   desenhar();
 }
 
+/* ---------- thumbs ---------- */
+function thumbUrl(m) {
+  if (m.youtube_id && m.youtube_id !== "x") return `https://i.ytimg.com/vi/${m.youtube_id}/mqdefault.jpg`;
+  return null;
+}
 async function thumbDe(m) {
-  if (S.demo) return null;
   if (m.id in S.thumbs) return S.thumbs[m.id];
   S.thumbs[m.id] = null;
   try { const b = await lerArquivo(`estado/thumbs/${m.id}.jpg`, "blob"); if (b) S.thumbs[m.id] = URL.createObjectURL(b); } catch (e) {}
@@ -355,186 +401,264 @@ async function thumbDe(m) {
 }
 function pintarThumbs() {
   document.querySelectorAll("[data-thumb]").forEach(async el => {
-    const id = el.dataset.thumb, m = momentos().find(x => x.id === id) || todos().find(x => x.id === id);
+    const m = todos().find(x => x.id === el.dataset.thumb);
     if (!m) return;
-    if (S.demo) { el.style.backgroundImage = `url("${thumbDemo(m)}")`; el.classList.remove("sem"); el.textContent = ""; return; }
+    const pinta = u => { el.style.backgroundImage = `url("${u}")`; el.classList.remove("sem"); el.textContent = ""; };
+    if (S.demo) return pinta(thumbDemo(m));
+    const yt = thumbUrl(m);
+    if (yt) return pinta(yt);
     const url = await thumbDe(m);
-    if (url) { el.style.backgroundImage = `url("${url}")`; el.classList.remove("sem"); el.textContent = ""; }
+    if (url) pinta(url);
   });
 }
 
 /* ---------- dados derivados ---------- */
 const todos = () => Object.values(S.dados[S.canal].momentos || {});
-const momentos = () => todos();
 const cfgCanal = () => (S.cfg?.canais || []).find(c => c.id === S.canal) || {streamers: []};
 const bloqueados = () => (S.cfg?.bloqueados || []).map(x => String(x).toLowerCase());
+const quandoPublica = m => m.publicar_em || m.envio_pendente?.publicar_em || null;
+const noFuturo = iso => iso && new Date(iso) > new Date();
 function visibilidade(m) {
   if (S.pendentes[m.id]) return {cls: "pendente", txt: S.pendentes[m.id]};
   if (m.status === "removido" || m.status === "descartado") return {cls: "removido", txt: "Removido"};
+  if (m.status === "erro") return {cls: "erro", txt: "Deu erro"};
   if (m.status === "pronto") return {cls: "privado", txt: "Pronto pra postar"};
-  if (m.privacidade === "private") return {cls: "agendado", txt: "Postado · privado/agendado"};
-  return {cls: "publico", txt: "Postado"};
+  if (m.status === "aguardando_cota") return {cls: "pendente", txt: "Na fila do YouTube"};
+  if (m.status === "postado") {
+    const q = quandoPublica(m);
+    if (noFuturo(q)) return {cls: "agendado", txt: "Agendado · " + quando(q)};
+    if (m.privacidade === "private") return {cls: "privado", txt: "Privado"};
+    return {cls: "publico", txt: "No ar"};
+  }
+  return {cls: "", txt: m.status || "—"};
 }
-const dataDe = m => m.postado_em || m.feito_em;
-const postados = tipo => todos().filter(m => ["pronto", "postado"].includes(m.status) || (m.status === "removido" && m.youtube_id))
-  .filter(m => tipo === "short" ? ["short", "noticia"].includes(m.tipo || "short") : ["dia", "top10", "longo", "serie", "narrado"].includes(m.tipo))
+const dataDe = m => quandoPublica(m) || m.postado_em || m.feito_em || m.criado_em;
+const TIPOS = {shorts: m => ["short", "contagem", undefined, null].includes(m.tipo) || !m.tipo,
+               noticias: m => m.tipo === "noticia",
+               longos: m => ["dia", "top10", "longo", "serie", "narrado"].includes(m.tipo)};
+const feitos = filtro => todos().filter(m => ["pronto", "aguardando_cota", "postado"].includes(m.status) || (m.status === "removido" && m.youtube_id))
+  .filter(TIPOS[filtro] || (() => true))
   .sort((a, b) => (dataDe(b) || "").localeCompare(dataDe(a) || ""));
-const aRevisar = () => postados("short").concat(postados("comp")).filter(m => m.status === "pronto").sort((a, b) => (dataDe(a) || "").localeCompare(dataDe(b) || ""));
-const fila = () => todos().filter(m => m.status === "novo").sort((a, b) => (!!b.prioridade - !!a.prioridade) || (b.score - a.score));
-const nomeDe = login => (cfgCanal().streamers || []).find(s => s.login === login)?.nome || login;
-const filtra = lista => !S.busca ? lista : lista.filter(m => [m.titulo, m.nome, nomeDe(m.streamer), m.streamer, ...(m.titulos_chat || [])].join(" ").toLowerCase().includes(S.busca));
+const agendados = () => todos().filter(m => m.status === "aguardando_cota" || (m.status === "postado" && noFuturo(quandoPublica(m))))
+  .sort((a, b) => (quandoPublica(a) || "9999").localeCompare(quandoPublica(b) || "9999"));
+const noAr = () => todos().filter(m => m.status === "postado" && !noFuturo(quandoPublica(m)));
+const prontos = () => todos().filter(m => m.status === "pronto");
+const fila = () => todos().filter(m => m.status === "novo").sort((a, b) => (!!b.prioridade - !!a.prioridade) || ((b.score || 0) - (a.score || 0)));
+const nomeDe = login => (cfgCanal().streamers || []).find(s => s.login === login)?.nome || login || "";
+const nomeDo = m => m.nome || (m.tipo === "narrado" || m.quadro === "modelado" ? "Corte City" : m.streamers ? m.streamers.map(nomeDe).slice(0, 3).join(", ") : nomeDe(m.streamer));
+const filtra = lista => !S.busca ? lista : lista.filter(m => [m.titulo, m.nome, nomeDo(m), m.streamer, ...(m.titulos_chat || [])].join(" ").toLowerCase().includes(S.busca));
+const roboItens = () => Object.values(S.robo.momentos || {}).sort((a, b) => (b.pedido_em || b.atualizado_em || "").localeCompare(a.pedido_em || a.atualizado_em || ""));
+const roboPendentes = () => roboItens().filter(m => ["esperando", "na_fila", "biblioteca_pendente", "fonte_pendente", "analise_pendente", "modelo_pendente", "baixando"].includes(m.status));
+const roboErros = () => roboItens().filter(m => m.status === "erro");
 
 /* ---------- desenho ---------- */
-function desenhar() {
+let scrollGuardado = 0;
+function desenhar(guardaScroll) {
+  if (guardaScroll) scrollGuardado = window.scrollY;
   document.body.classList.toggle("canal-en", S.canal === "en");
   const c = CANAIS[S.canal];
   $("#marcaNome").innerHTML = `${c.p1} <em>${c.p2}</em>`;
   $("#nomeCanal").textContent = c.nome;
   document.title = c.nome + " Studio";
-  document.querySelectorAll(".trocar button").forEach(b => b.setAttribute("aria-pressed", b.dataset.canal === S.canal));
+  document.querySelectorAll(".trocar button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.canal === S.canal)));
   const rota = (location.hash || "#painel").slice(1);
   document.querySelectorAll(".nav a").forEach(a => a.dataset.rota === rota ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current"));
-  const rev = aRevisar().length, badge = $("#badgeRevisao");
+  const rev = prontos().length + todos().filter(m => m.status === "erro").length, badge = $("#badgeRevisao");
   badge.hidden = !rev; badge.textContent = rev;
+  const rp = roboPendentes().length + roboErros().length, br2 = $("#badgeRobo");
+  br2.hidden = !rp; br2.textContent = rp;
   $("#rodape").innerHTML = S.demo ? `Mostrando exemplo.<br><a href="#ajustes">Conectar dados reais</a>` :
-    `Atualizado ${quando(S.carregadoEm?.toISOString())}<br><a href="https://github.com/${REPO}/actions" target="_blank" rel="noopener">Ver a máquina trabalhando</a>`;
+    `Atualizado ${quando(S.carregadoEm?.toISOString())} · <a href="#" id="atualizar">atualizar</a><br><a href="https://github.com/${REPO}/actions" target="_blank" rel="noopener">Ver a máquina trabalhando</a>`;
   const telas = {painel: telaPainel, conteudo: telaConteudo, fila: telaFila, streamers: telaStreamers, ajustes: telaAjustes};
-  const main = $("#conteudo");
-  main.innerHTML = (S.demo && rota !== "ajustes" ? avisoDemo() : "") + (telas[rota] || telaPainel)();
+  $("#conteudo").innerHTML = (S.demo && rota !== "ajustes" ? avisoDemo() : "") + (telas[rota] || telaPainel)();
   pintarThumbs();
+  if (guardaScroll) window.scrollTo(0, scrollGuardado);
 }
 
 function avisoDemo() {
   return `<div class="aviso-demo"><i class="rec"></i><p>${S.erro ? esc(S.erro) : "Você está vendo dados de exemplo. Conecte seu token do GitHub para ver os vídeos reais e usar os botões."}</p><a class="btn btn-borda btn-sm" href="#ajustes">Conectar</a></div>`;
 }
-
 function cabeca(titulo, sub, direita = "") {
   return `<div class="cabeca"><div><h1>${titulo}</h1>${sub ? `<p class="sub">${sub}</p>` : ""}</div>${direita}</div>`;
 }
 
-/* PAINEL */
+/* ---------- PAINEL ---------- */
+function ultimaRodada() {
+  const r = S.runs.find(x => /rodada/i.test(x.name || ""));
+  if (!r) return null;
+  const rodando = r.status !== "completed";
+  return {rodando, ok: r.conclusion === "success", quando: r.run_started_at || r.created_at, url: r.html_url};
+}
 function telaPainel() {
-  const shorts = postados("short"), ultimo = aRevisar()[0] || shorts[0];
-  const mes = Date.now() - 28 * 864e5;
-  const recentes = postados("short").concat(postados("comp")).filter(m => m.status === "postado" && new Date(dataDe(m)) > mes);
+  const ag = agendados(), ar = noAr(), pr = prontos();
+  const proximo = ag[0] || pr[0] || ar[0];
+  const corte = Date.now() - 28 * DIA;
+  const recentes = ar.filter(m => new Date(dataDe(m)) > corte);
   const views28 = recentes.reduce((s, m) => s + (m.views || 0), 0);
   const likes28 = recentes.reduce((s, m) => s + (m.likes || 0), 0);
-  // views por dia de postagem (14 dias)
   const dias = [...Array(14)].map((_, i) => { const d = new Date(); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - 13 + i); return d; });
-  const porDia = dias.map(d => recentes.filter(m => { const p = new Date(m.postado_em); p.setHours(0, 0, 0, 0); return +p === +d; }).reduce((s, m) => s + (m.views || 0), 0));
+  const porDia = dias.map(d => recentes.filter(m => { const p = new Date(dataDe(m)); p.setHours(0, 0, 0, 0); return +p === +d; }).reduce((s, m) => s + (m.views || 0), 0));
   const max = Math.max(1, ...porDia);
-  const ranking = Object.values(shorts.reduce((acc, m) => { const k = m.streamer; acc[k] = acc[k] || {login: k, views: 0, n: 0}; acc[k].views += m.views || 0; acc[k].n++; return acc; }, {}))
-    .sort((a, b) => b.views - a.views).slice(0, 5);
-  const proximos = fila().slice(0, 4);
+  const ranking = Object.values(ar.filter(m => m.streamer && m.streamer !== "*" && m.streamer !== "corte-city").reduce((acc, m) => {
+    const k = m.streamer; acc[k] = acc[k] || {login: k, views: 0, n: 0}; acc[k].views += m.views || 0; acc[k].n++; return acc; }, {}))
+    .sort((a, b) => b.views - a.views).slice(0, 4);
+  const rod = ultimaRodada(), erros = todos().filter(m => m.status === "erro"), rErros = roboErros();
 
   return cabeca("Painel do canal", `${CANAIS[S.canal].yt} · ${modoTxt()}`) + `
   <div class="grade">
     <section class="cartao ultimo">
-      <h2>${ultimo && ultimo.status === "pronto" ? "Próximo pra postar" : "Último Short"}</h2>
-      ${ultimo ? `
-        <span class="thumb sem" data-thumb="${ultimo.id}">${inicial(nomeDe(ultimo.streamer))}</span>
-        <h3>${esc(ultimo.titulo)}</h3>
-        <p class="meta">${esc(nomeDe(ultimo.streamer))} · ${quando(dataDe(ultimo))}</p>
+      <h2>${proximo && (proximo.status !== "postado" || noFuturo(quandoPublica(proximo))) ? "Próximo a ir pro ar" : "Última postagem"}</h2>
+      ${proximo ? `
+        <span class="thumb sem" data-thumb="${proximo.id}">${inicial(nomeDo(proximo))}</span>
+        <h3>${esc(proximo.titulo || "Sem título")}</h3>
+        <p class="meta">${esc(nomeDo(proximo))} · ${quando(dataDe(proximo))}</p>
         <div style="margin-top:12px">
-          <div class="linha-num"><span>Visualizações</span><b>${fmt(ultimo.views || 0)}</b></div>
-          <div class="linha-num"><span>Curtidas</span><b>${fmt(ultimo.likes || 0)}</b></div>
-          <div class="linha-num"><span>Situação</span><span class="chip ${visibilidade(ultimo).cls}"><i></i>${visibilidade(ultimo).txt}</span></div>
+          <div class="linha-num"><span>Situação</span><span class="chip ${visibilidade(proximo).cls}"><i></i>${visibilidade(proximo).txt}</span></div>
+          ${proximo.status === "postado" && !noFuturo(quandoPublica(proximo)) ? `
+          <div class="linha-num"><span>Visualizações</span><b>${fmt(proximo.views || 0)}</b></div>
+          <div class="linha-num"><span>Curtidas</span><b>${fmt(proximo.likes || 0)}</b></div>` : ""}
         </div>
         <div class="acoes" style="justify-content:flex-start;margin-top:14px">
-          ${ultimo.status === "pronto" ? botoesPostar(ultimo, true) : ""}
-          <a class="btn btn-borda btn-sm" href="#conteudo">Ver todos os vídeos</a>
-        </div>` : vazio("Nenhum Short ainda", "Assim que a máquina postar o primeiro, ele aparece aqui.")}
+          ${proximo.status === "pronto" ? botoesPostar(proximo, true) : ""}
+          ${proximo.youtube_id ? `<a class="btn btn-borda btn-sm" href="${ytLink(proximo)}" target="_blank" rel="noopener">Ver no YouTube</a>` : ""}
+          <a class="btn btn-borda btn-sm" href="#conteudo">Todos os vídeos</a>
+        </div>
+        ${ag.length ? `<h2 style="margin:20px 0 4px">Agenda (${ag.length})</h2>` + ag.slice(0, 5).map(linhaProx).join("") : ""}`
+      : vazio("Nada por aqui ainda", "Assim que a máquina terminar o primeiro vídeo, ele aparece aqui.")}
     </section>
     <section class="cartao">
       <h2>Números do canal</h2>
       <div class="numeros">
         <div class="num destaque"><b>${fmt(views28)}</b><span>views em 28 dias</span></div>
         <div class="num"><b>${fmt(likes28)}</b><span>curtidas em 28 dias</span></div>
-        <div class="num"><b>${shorts.length}</b><span>Shorts feitos</span></div>
-        <div class="num"><b>${aRevisar().length}</b><span>prontos pra postar</span></div>
+        <div class="num"><b>${ar.length}</b><span>vídeos no ar</span></div>
+        <div class="num"><b>${ag.length}</b><span>agendados</span></div>
       </div>
       <div class="grafico">
-        <p class="meta">Views dos vídeos postados (cole o link em “Já postei” para contar)</p>
+        <p class="meta">Views por dia de postagem (14 dias) · <a href="#" data-acao="numeros">atualizar views</a></p>
         <div class="barras">${porDia.map((v, i) => `<div style="height:${Math.round(v / max * 100)}%" class="${i === 13 ? "hoje" : ""}" data-v="${fmt(v)} views · ${dias[i].toLocaleDateString("pt-BR", {day: "2-digit", month: "2-digit"})}"></div>`).join("")}</div>
         <div class="eixo"><span>${dias[0].toLocaleDateString("pt-BR", {day: "2-digit", month: "2-digit"})}</span><span>hoje</span></div>
       </div>
+      <h2 style="margin:20px 0 2px">Quem mais rende</h2>
+      ${ranking.length ? ranking.map(r => `<div class="mini"><span class="ini" style="background:${corDe(r.login)};color:var(--noite)">${inicial(nomeDe(r.login))}</span><p><b>${esc(nomeDe(r.login))}</b><span>${r.n} vídeo${r.n > 1 ? "s" : ""}</span></p><em>${fmt(r.views)}</em></div>`).join("") : vazio("Sem dados ainda", "O ranking aparece depois dos primeiros vídeos no ar.")}
     </section>
     <section class="cartao">
-      <h2>Streamers que mais rendem</h2>
-      ${ranking.length ? ranking.map(r => `<div class="mini"><span class="ini" style="background:${corDe(r.login)};color:var(--noite)">${inicial(nomeDe(r.login))}</span><p><b>${esc(nomeDe(r.login))}</b><span>${r.n} Short${r.n > 1 ? "s" : ""}</span></p><em>${fmt(r.views)}</em></div>`).join("") : vazio("Sem dados ainda", "O ranking aparece depois dos primeiros vídeos.")}
-      <h2 style="margin-top:22px">Próximos da fila</h2>
-      ${proximos.length ? proximos.map(m => `<div class="mini"><span class="ini">${m.n_clipes}</span><p><b>${esc(nomeDe(m.streamer))}</b><span>${esc(tituloChat(m))}</span></p></div>`).join("") + `<a class="btn btn-borda btn-sm" style="margin-top:10px" href="#fila">Abrir a fila</a>` : vazio("Fila vazia", "A máquina procura clipes novos a cada 4 horas.")}
+      <h2>Saúde da máquina</h2>
+      <div class="saude">
+        ${rod ? `<a class="saude-linha ${rod.rodando ? "roda" : rod.ok ? "ok" : "ruim"}" href="${esc(rod.url)}" target="_blank" rel="noopener" style="text-decoration:none"><i></i><p>${rod.rodando ? "Rodada acontecendo agora" : rod.ok ? "Última rodada deu certo" : "A última rodada falhou"}<span>${quando(rod.quando)}</span></p></a>` : ""}
+        <div class="saude-linha ${roboPendentes().length ? "roda" : "ok"}"><i></i><p>Robô do Mac: ${roboPendentes().length ? `${roboPendentes().length} download${roboPendentes().length > 1 ? "s" : ""} na fila` : "fila limpa"}<span>${rErros.length ? rErros.length + " com erro · " : ""}<a href="#fila">ver a fila</a></span></p></div>
+        ${erros.length ? `<div class="saude-linha ruim"><i></i><p>${erros.length} vídeo${erros.length > 1 ? "s" : ""} com erro na edição<span>${esc(erros[0].titulo || erros[0].id)}</span></p></div>` : ""}
+        ${pr.length ? `<div class="saude-linha roda"><i></i><p>${pr.length} pronto${pr.length > 1 ? "s" : ""} esperando você postar<span><a href="#conteudo">abrir conteúdo</a></span></p></div>` : ""}
+      </div>
+      <h2 style="margin:20px 0 4px">Próximos da fila de cortes</h2>
+      ${fila().slice(0, 4).map(m => `<div class="mini"><span class="ini">${m.n_clipes || 1}</span><p><b>${esc(nomeDe(m.streamer))}</b><span>${esc(tituloChat(m))}</span></p><em>${fmt(m.views || 0)}</em></div>`).join("") || vazio("Fila vazia", "A máquina procura clipes novos a cada rodada.")}
+      <a class="btn btn-borda btn-sm" style="margin-top:10px" href="#fila">Abrir a fila</a>
     </section>
   </div>`;
 }
+function linhaProx(m) {
+  const q = quandoPublica(m), d = q ? new Date(q) : null;
+  return `<div class="prox"><div class="hora"><b>${d ? d.toLocaleTimeString("pt-BR", {hour: "2-digit", minute: "2-digit"}) : "—"}</b><span>${d ? (quando(q).split(" ")[0] === "em" ? "logo" : quando(q).split(" ")[0]) : "sem hora"}</span></div>
+    <p><b>${esc(m.titulo || "Sem título")}</b><span>${esc(nomeDo(m))}${m.status === "aguardando_cota" ? " · esperando a cota do YouTube" : ""}</span></p></div>`;
+}
 
-/* CONTEÚDO */
+/* ---------- CONTEÚDO ---------- */
 function telaConteudo() {
-  const listas = {revisar: aRevisar(), shorts: postados("short"), comp: postados("comp")};
+  const temProntos = prontos().length > 0;
+  const listas = {agendados: agendados(), shorts: feitos("shorts"), noticias: feitos("noticias"), longos: feitos("longos")};
+  if (temProntos) listas.prontos = prontos();
+  if (!(S.aba in listas)) S.aba = listas.agendados.length ? "agendados" : "shorts";
   const lista = filtra(listas[S.aba]);
-  const aba = (id, nome) => `<button role="tab" aria-selected="${S.aba === id}" data-aba="${id}">${nome}<span class="cont">${listas[id].length}</span></button>`;
-  return cabeca("Conteúdo do canal", "Baixe o vídeo, copie título e descrição, poste pelo app do YouTube e aperte “Já postei”.") + `
-  <div class="abas" role="tablist">${aba("revisar", "Prontos pra postar")}${aba("shorts", "Shorts")}${aba("comp", "Compilados")}</div>
-  ${lista.length ? `<table class="tabela"><thead><tr><th>Vídeo</th><th>Visibilidade</th><th class="esconde-mob">Data</th><th class="num-col">Views</th><th class="num-col esconde-mob">Curtidas</th></tr></thead><tbody>
+  const nomes = {prontos: "Pra você postar", agendados: "Agendados", shorts: "Shorts", noticias: "Notícias", longos: "Vídeos longos"};
+  const aba = id => `<button role="tab" aria-selected="${S.aba === id}" data-aba="${id}">${nomes[id]}<span class="cont">${listas[id].length}</span></button>`;
+  return cabeca("Conteúdo do canal", modoTxt() + ".") + `
+  <div class="abas" role="tablist">${Object.keys(listas).map(aba).join("")}</div>
+  ${lista.length ? `<table class="tabela"><thead><tr><th>Vídeo</th><th>Situação</th><th class="esconde-mob">Quando</th><th class="num-col">Views</th><th class="num-col esconde-mob">Curtidas</th></tr></thead><tbody>
     ${lista.map(linhaVideo).join("")}</tbody></table>` :
-    vazio(S.busca ? "Nada encontrado" : S.aba === "revisar" ? "Nada pra postar agora" : "Nenhum vídeo aqui ainda",
-          S.busca ? "Tente outro nome ou palavra." : S.aba === "revisar" ? "Quando a máquina terminar um vídeo, ele aparece aqui pronto pra você postar." : "Os vídeos aparecem aqui assim que a máquina fizer.")}`;
+    vazio(S.busca ? "Nada encontrado" : "Nada aqui ainda",
+          S.busca ? "Tente outro nome ou palavra." : S.aba === "agendados" ? "Quando a máquina agendar um vídeo, ele aparece aqui com o horário." : "Os vídeos aparecem aqui assim que a máquina fizer.")}`;
 }
 function linhaVideo(m) {
-  const v = visibilidade(m), nome = m.tipo === "short" || !m.tipo ? nomeDe(m.streamer) : (m.streamers || []).map(nomeDe).slice(0, 3).join(", ");
-  const dur = m.duracao ? `0:${String(Math.round(m.duracao)).padStart(2, "0")}` : m.tipo === "top10" ? "TOP 10" : m.tipo === "dia" ? "LONGO" : "";
+  const v = visibilidade(m), nome = nomeDo(m);
+  const d = m.duracao ? dur(m.duracao) : m.tipo === "top10" ? "TOP 10" : ["dia", "longo", "narrado", "serie"].includes(m.tipo) ? "LONGO" : "";
+  const alvo = m.youtube_id && m.youtube_id !== "x" ? ytLink(m) : (m.status === "pronto" && m.video_url ? m.video_url : null);
   return `<tr>
     <td><div class="vid">
-      <a class="dur" href="${m.status === "pronto" ? esc(m.video_url || "#") : ytLink(m)}" target="_blank" rel="noopener" aria-label="${m.status === "pronto" ? "Baixar vídeo" : "Abrir no YouTube"}"><span class="thumb sem" data-thumb="${m.id}">${inicial(nome)}</span>${dur ? `<span>${dur}</span>` : ""}</a>
-      <div class="vid-txt"><strong>${esc(m.titulo || "Sem título")}</strong><small>${esc(nome)}</small>
+      ${alvo ? `<a class="dur" href="${esc(alvo)}" target="_blank" rel="noopener">` : `<span class="dur">`}<span class="thumb sem" data-thumb="${m.id}">${inicial(nome)}</span>${d ? `<span>${d}</span>` : ""}${alvo ? "</a>" : "</span>"}
+      <div class="vid-txt"><strong>${esc(m.titulo || "Sem título")}</strong><small>${esc(nome)}${m.quadro === "modelado" ? " · modelado de viral" : ""}</small>
         ${m.aviso ? `<p class="aviso-linha">${esc(m.aviso)}</p>` : ""}
         ${m.status === "pronto" ? `<div class="acoes" style="justify-content:flex-start;margin-top:8px">${botoesPostar(m)}</div>` : `<div class="vid-acoes">
-          ${m.youtube_id ? `<a class="icone-btn" title="Abrir no YouTube Studio" aria-label="Abrir no YouTube Studio" href="https://studio.youtube.com/video/${m.youtube_id}/edit" target="_blank" rel="noopener">${ic.lapis}</a>
-          <a class="icone-btn" title="Ver no YouTube" aria-label="Ver no YouTube" href="${ytLink(m)}" target="_blank" rel="noopener">${ic.olho}</a>` : `<button class="btn btn-borda btn-sm" data-acao="postei" data-id="${m.id}">Colar link do YouTube</button>`}
-          ${m.status === "postado" && m.youtube_id ? `<button class="icone-btn perigo" title="Apagar do YouTube" aria-label="Apagar do YouTube" data-acao="descartar" data-id="${m.id}">${ic.lixo}</button>` : ""}
+          ${m.youtube_id && m.youtube_id !== "x" ? `<a class="icone-btn" title="Abrir no YouTube Studio" aria-label="Abrir no YouTube Studio" href="https://studio.youtube.com/video/${m.youtube_id}/edit" target="_blank" rel="noopener">${ic.lapis}</a>
+          <a class="icone-btn" title="Ver no YouTube" aria-label="Ver no YouTube" href="${ytLink(m)}" target="_blank" rel="noopener">${ic.olho}</a>
+          <button class="icone-btn perigo" title="Apagar do YouTube" aria-label="Apagar do YouTube" data-acao="descartar" data-id="${esc(m.id)}">${ic.lixo}</button>` :
+          m.status === "aguardando_cota" ? `<button class="btn btn-borda btn-sm" data-acao="descartar-pronto" data-id="${esc(m.id)}">Cancelar</button>` : ""}
         </div>`}
       </div></div></td>
     <td><span class="chip ${v.cls}"><i></i>${v.txt}</span></td>
     <td class="esconde-mob">${quando(dataDe(m))}</td>
-    <td class="num-col">${fmt(m.views || 0)}</td>
-    <td class="num-col esconde-mob">${fmt(m.likes || 0)}</td></tr>`;
+    <td class="num-col">${m.status === "postado" && !noFuturo(quandoPublica(m)) ? fmt(m.views || 0) : "—"}</td>
+    <td class="num-col esconde-mob">${m.status === "postado" && !noFuturo(quandoPublica(m)) ? fmt(m.likes || 0) : "—"}</td></tr>`;
 }
 
-/* FILA */
+/* ---------- FILA ---------- */
 function tituloChat(m) { return (m.titulos_chat || []).find(t => t && t.length > 3) || "sem título do público"; }
+const PLAT = {youtube: "YT", tiktok: "TK", reels: "IG", x: "X", kick: "KICK", facebook: "FB", live: "LIVE"};
+function rotuloRobo(m) {
+  const s = m.status || "";
+  if (s === "esperando" || s === "na_fila") return m.origem === "live" ? "live esperando o Mac baixar os melhores trechos" : "esperando o Mac baixar os melhores trechos";
+  if (s === "modelo_pendente") return "viral esperando o Mac baixar (vira vídeo nosso)";
+  if (s === "modelo_baixado") return "baixado · a máquina monta na próxima rodada";
+  if (s === "biblioteca_pendente") return "esperando guardar na biblioteca";
+  if (s.endsWith("_ok") || s === "modelado") return "feito";
+  if (s === "pausado") return "pausado";
+  if (s === "baixando") return "baixando agora";
+  return s;
+}
 function telaFila() {
   const lista = filtra(fila());
-  return cabeca("Fila de momentos", "Trechos que o público clipou e que ainda viram vídeo. A nota mistura quantas pessoas cliparam e as views.",
+  const rb = roboPendentes(), re = roboErros();
+  return cabeca("Fila da máquina", "O que ainda vai virar vídeo: momentos clipados na Twitch e downloads do robô do Mac.",
     `<button class="btn btn-ac" data-acao="rodar"><i class="rec"></i>Fazer o próximo agora</button>`) +
   (lista.length ? `<div>${lista.map(m => {
     const n = Math.min(99, Math.round(Math.log10((m.score || 1) + 1) * 20));
     return `<article class="fila-item">
       <div class="nota" title="Nota do momento"><span><b>${n}</b><br>nota</span></div>
       <div><h3>${esc(nomeDe(m.streamer))}${m.prioridade ? `<span class="prio">próximo</span>` : ""}</h3>
-        <p class="meta">${m.n_clipes} clipe${m.n_clipes > 1 ? "s" : ""} do mesmo momento · ${fmt(m.views)} views nos clipes · ${quando(m.criado_em)}${m.video_id ? "" : " · sem a live gravada"}</p>
+        <p class="meta">${m.n_clipes || 1} clipe${(m.n_clipes || 1) > 1 ? "s" : ""}${m.clipadores > 1 ? ` de ${m.clipadores} pessoas` : ""} · ${fmt(m.views || 0)} views · ${quando(m.criado_em)}${m.video_id ? "" : " · sem a live gravada"}</p>
         <div class="titulos-chat">${(m.titulos_chat || []).filter(Boolean).slice(0, 4).map(t => `<span title="${esc(t)}">${esc(t)}</span>`).join("")}</div></div>
       <div class="acoes">
         ${m.clipe_url ? `<a class="btn btn-borda btn-sm" href="${esc(m.clipe_url)}" target="_blank" rel="noopener">Ver clipe</a>` : ""}
-        ${m.prioridade ? "" : `<button class="btn btn-borda btn-sm" data-acao="priorizar" data-id="${m.id}">Fazer este primeiro</button>`}
-        <button class="btn btn-borda btn-sm" data-acao="descartar-fila" data-id="${m.id}">Descartar</button>
+        ${m.prioridade ? "" : `<button class="btn btn-borda btn-sm" data-acao="priorizar" data-id="${esc(m.id)}">Fazer este primeiro</button>`}
+        <button class="btn btn-borda btn-sm" data-acao="descartar-fila" data-id="${esc(m.id)}">Descartar</button>
       </div></article>`;
-  }).join("")}</div>` : vazio(S.busca ? "Nada encontrado" : "A fila está vazia", S.busca ? "Tente outro nome." : "A máquina procura clipes novos a cada 4 horas. Use “Fazer o próximo agora” para procurar já."));
+  }).join("")}</div>` : vazio(S.busca ? "Nada encontrado" : "A fila de cortes está vazia", S.busca ? "Tente outro nome." : "A máquina procura clipes novos a cada rodada. Use “Fazer o próximo agora” para procurar já.")) + `
+  <div class="grupo-robo">
+    <h2>Robô do Mac ${rb.length ? `<span class="cont">${rb.length} na fila</span>` : `<span class="cont">fila limpa</span>`}</h2>
+    <p class="meta">Downloads que rodam no seu Mac (ele precisa estar ligado). Lives e virais entram aqui antes de virar vídeo.</p>
+    ${rb.concat(re).concat(roboItens().filter(m => (m.status || "").endsWith("_ok") || m.status === "modelado").slice(0, 4)).map(m => `
+      <div class="robo-item"><span class="plat" style="color:${m.status === "erro" ? "var(--corte)" : "var(--ac)"}">${PLAT[m.origem === "live" ? "live" : m.plataforma] || "YT"}</span>
+        <p><b>${esc(m.titulo || m.link || m.id)}</b>
+           <span>${esc(m.canal_nome || "")}${m.views_yt ? ` · ${fmt(m.views_yt)} views` : ""} · ${rotuloRobo(m)} · ${quando(m.atualizado_em || m.pedido_em)}</span>
+           ${m.status === "erro" ? `<span class="erro-txt" title="${esc(m.erro || "")}">${esc((m.erro || "erro").slice(0, 120))}</span>` : ""}</p>
+        ${m.link ? `<a class="icone-btn" title="Abrir o vídeo original" href="${esc(m.link)}" target="_blank" rel="noopener">${ic.olho}</a>` : ""}
+      </div>`).join("") || vazio("Nada na fila do robô", "Mande links pelo botão “Mandar links” lá em cima.")}
+  </div>`;
 }
 
-/* STREAMERS */
+/* ---------- STREAMERS ---------- */
 function telaStreamers() {
   const lista = (cfgCanal().streamers || []).filter(s => !S.busca || (s.nome + s.login).toLowerCase().includes(S.busca));
-  const bloq = bloqueados(), shorts = postados("short");
-  return cabeca("Streamers", `Quem o ${CANAIS[S.canal].nome} corta. Bloquear faz a máquina parar de usar os vídeos da pessoa.`) + `
+  const bloq = bloqueados(), ar = noAr();
+  return cabeca("Streamers", `Quem o ${CANAIS[S.canal].nome} corta — e a máquina ainda descobre clipes de GTA 6 de qualquer streamer sozinha.`) + `
   <div class="streamers">
     ${lista.map(s => {
-      const b = bloq.includes(s.login), meus = shorts.filter(m => m.streamer === s.login), v = meus.reduce((t, m) => t + (m.views || 0), 0);
+      const b = bloq.includes(s.login), meus = ar.filter(m => m.streamer === s.login), v = meus.reduce((t, m) => t + (m.views || 0), 0);
       const naFila = fila().filter(m => m.streamer === s.login).length;
       return `<article class="st ${b ? "bloq" : ""}">
         <div class="st-topo"><span class="st-av" style="background:${corDe(s.login)}">${inicial(s.nome)}</span>
           <p><strong>${esc(s.nome)}</strong><a href="https://twitch.tv/${esc(s.login)}" target="_blank" rel="noopener">twitch.tv/${esc(s.login)}</a></p>
           ${b ? `<span class="tag-bloq">Bloqueado</span>` : ""}</div>
-        <div class="st-nums"><div><b>${meus.length}</b><span>Shorts</span></div><div><b>${fmt(v)}</b><span>views</span></div><div><b>${naFila}</b><span>na fila</span></div></div>
+        <div class="st-nums"><div><b>${meus.length}</b><span>no ar</span></div><div><b>${fmt(v)}</b><span>views</span></div><div><b>${naFila}</b><span>na fila</span></div></div>
         <div class="st-acoes">
           ${b ? `<button class="btn btn-borda btn-sm" data-acao="desbloquear" data-login="${esc(s.login)}">Desbloquear</button>`
               : `<button class="btn btn-borda btn-sm" data-acao="bloquear" data-login="${esc(s.login)}" data-nome="${esc(s.nome)}">Bloquear</button>`}
@@ -551,7 +675,7 @@ function telaStreamers() {
   </div>`;
 }
 
-/* CONFIGURAÇÕES */
+/* ---------- CONFIGURAÇÕES ---------- */
 function telaAjustes() {
   const tem = !!token(), c = cfgCanal();
   return cabeca("Configurações", "Conecte o painel aos dados reais da máquina.") + `
@@ -576,7 +700,7 @@ function telaAjustes() {
       <div class="linha-num"><span>Situação</span><b>${c.ativo === false ? "Desligado" : "Ligado"}</b></div>
       <div class="linha-num"><span>Como funciona</span><b>${modoTxt()}</b></div>
       <div class="linha-num"><span>Horários dos Shorts</span><b>${(c.horarios || []).join(", ") || "—"}</b></div>
-      <div class="linha-num"><span>Compilado do dia</span><b>${c.horario_compilado || "—"}</b></div>
+      <div class="linha-num"><span>Meta por dia</span><b>${c.por_dia ? c.por_dia + " Shorts" : "—"}</b></div>
       <p class="meta" style="margin-top:12px">Para mudar horários, modo ou ligar o canal, edite o <a href="https://github.com/${REPO}/edit/main/config.yaml" target="_blank" rel="noopener">config.yaml</a>.</p>
     </section>
     <section class="cartao">
@@ -592,14 +716,12 @@ function telaAjustes() {
 }
 
 function botoesPostar(m, curto) {
-  return `<a class="btn btn-ac btn-sm" href="${esc(m.video_url || "#")}" target="_blank" rel="noopener">Baixar vídeo</a>
-    <button class="btn btn-borda btn-sm" data-copiar="titulo" data-id="${m.id}">Copiar título</button>
-    <button class="btn btn-borda btn-sm" data-copiar="descricao" data-id="${m.id}">Copiar descrição</button>
-    ${curto ? "" : `<a class="btn btn-borda btn-sm" href="${esc(m.thumb_url || "#")}" target="_blank" rel="noopener">Baixar thumb</a>`}
-    ${m.kit_url ? `<a class="btn btn-borda btn-sm" href="${esc(m.kit_url)}" target="_blank" rel="noopener" title="PDF com frames, títulos e o texto pronto pra IA de imagem">Kit da thumb (PDF)</a>` : ""}
-    ${m.kit_zip_url ? `<a class="btn btn-borda btn-sm" href="${esc(m.kit_zip_url)}" target="_blank" rel="noopener" title="Frames em alta + texto pra anexar na IA">Frames (ZIP)</a>` : ""}
-    <button class="btn btn-borda btn-sm" data-acao="postei" data-id="${m.id}">Já postei</button>
-    ${curto ? "" : `<button class="btn btn-borda btn-sm" data-acao="descartar-pronto" data-id="${m.id}">Descartar</button>`}`;
+  return `${m.video_url ? `<a class="btn btn-ac btn-sm" href="${esc(m.video_url)}" target="_blank" rel="noopener">Baixar vídeo</a>` : ""}
+    <button class="btn btn-borda btn-sm" data-copiar="titulo" data-id="${esc(m.id)}">Copiar título</button>
+    <button class="btn btn-borda btn-sm" data-copiar="descricao" data-id="${esc(m.id)}">Copiar descrição</button>
+    ${curto || !m.thumb_url ? "" : `<a class="btn btn-borda btn-sm" href="${esc(m.thumb_url)}" target="_blank" rel="noopener">Baixar thumb</a>`}
+    <button class="btn btn-borda btn-sm" data-acao="postei" data-id="${esc(m.id)}">Já postei</button>
+    ${curto ? "" : `<button class="btn btn-borda btn-sm" data-acao="descartar-pronto" data-id="${esc(m.id)}">Descartar</button>`}`;
 }
 async function copiar(texto) {
   try { await navigator.clipboard.writeText(texto); return true; } catch (e) {
@@ -607,12 +729,10 @@ async function copiar(texto) {
     let ok = false; try { ok = document.execCommand("copy"); } catch (e2) {} t.remove(); return ok;
   }
 }
-const modoTxt = () => "a máquina faz, você posta";
-const ytLink = m => m.youtube_id ? `https://youtu.be/${m.youtube_id}` : "#";
+function modoTxt() { const p = cfgCanal().postar; return p === "automatico" ? "a máquina faz, agenda e posta sozinha" : "a máquina faz, você posta"; }
+const ytLink = m => m.youtube_id && m.youtube_id !== "x" ? `https://youtu.be/${m.youtube_id}` : "#";
 function vazio(t, s) { return `<div class="vazio"><b>${t}</b>${s}</div>`; }
 const ic = {
-  publicar: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>',
-  relogio: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
   lapis: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg>',
   olho: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>',
   lixo: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg>',
@@ -623,46 +743,61 @@ let fecharDialogo = () => {};
 function dialogo(html, aoConfirmar) {
   const f = $("#fundoDialogo"), d = $("#dialogo"), antes = document.activeElement;
   d.innerHTML = html; f.classList.add("aberto");
-  const ok = d.querySelector("[data-ok]"); (d.querySelector("input") || ok)?.focus();
+  const ok = d.querySelector("[data-ok]"); (d.querySelector("input,textarea") || ok)?.focus();
   fecharDialogo = () => { f.classList.remove("aberto"); antes?.focus?.(); };
   d.querySelector("[data-cancelar]")?.addEventListener("click", fecharDialogo);
-  d.querySelector("form")?.addEventListener("submit", e => { e.preventDefault(); aoConfirmar(d); fecharDialogo(); });
+  d.querySelector("form")?.addEventListener("submit", e => { e.preventDefault(); if (aoConfirmar(d) !== false) fecharDialogo(); });
 }
 const botoesDlg = (rotulo, perigo) => `<div class="acoes"><button type="button" class="btn btn-borda" data-cancelar>Cancelar</button><button type="submit" class="btn ${perigo ? "btn-perigo" : "btn-ac"}" data-ok>${rotulo}</button></div>`;
 
 function pedir(texto, workflow, inputs, idPendente, rotuloPendente) {
   disparar(workflow, inputs).then(ok => {
     if (!ok) return;
-    if (idPendente) { S.pendentes[idPendente] = rotuloPendente; desenhar(); }
+    if (idPendente) { S.pendentes[idPendente] = rotuloPendente || "Fazendo…"; desenhar(true); }
     toast(texto);
-    setTimeout(() => { S.pendentes = {}; carregar(); }, 75000);
+    clearTimeout(pedir.t);
+    pedir.t = setTimeout(() => { S.pendentes = {}; carregar(); }, 75000);
   });
 }
 
-function agoraLocal(horas = 2) { const d = new Date(Date.now() + horas * 36e5); d.setMinutes(0); return new Date(d - d.getTimezoneOffset() * 6e4).toISOString().slice(0, 16); }
+const dlgMandar = () => dialogo(`<form><h2 id="dlgTitulo">Mandar links pra máquina</h2>
+  <div class="campo"><label for="dlgLinks">Links (um por linha)</label><textarea id="dlgLinks" rows="4" placeholder="https://www.youtube.com/watch?v=…&#10;https://www.tiktok.com/@canal/video/…&#10;https://www.instagram.com/reel/…" style="width:100%;font:inherit;padding:10px;border-radius:10px;background:var(--noite);border:1px solid var(--linha);color:inherit"></textarea></div>
+  <div class="campo"><label for="dlgTipo">O que fazer com eles</label><select id="dlgTipo">
+    <option value="pedir">Cortar os melhores momentos (vídeo ou live do YouTube)</option>
+    <option value="modelo">Refazer com a nossa voz e edição (Short/TikTok/Reels/X viral)</option>
+    <option value="biblioteca">Guardar inteiro na biblioteca de imagens (trailer oficial)</option>
+    <option value="noticia">Post do X → Short de notícia (com crédito)</option>
+  </select></div>${botoesDlg("Mandar pro robô")}</form>`,
+  d => {
+    const tipo = d.querySelector("#dlgTipo").value;
+    const tudo = d.querySelector("#dlgLinks").value.split(/\s+/).filter(Boolean);
+    const soYt = l => /(youtube\.com|youtu\.be)\//.test(l);
+    const links = (tipo === "pedir" || tipo === "biblioteca" ? tudo.filter(soYt)
+      : tipo === "noticia" ? tudo.filter(l => /(x|twitter)\.com\/.+\/status\//.test(l))
+      : tudo.filter(l => /(youtube\.com|youtu\.be|tiktok\.com|instagram\.com|x\.com|twitter\.com|kick\.com|fb\.watch|facebook\.com)\//.test(l))).join(" ");
+    if (!links) { toast(tipo === "noticia" ? "Nenhum link de post do X encontrado." : tipo === "modelo" ? "Nenhum link de vídeo reconhecido." : "Nenhum link do YouTube encontrado."); return false; }
+    if (tipo === "noticia") pedir("Pedido enviado. Os Shorts dos posts ficam prontos em uns 10 minutos.", "noticias.yml", {links});
+    else pedir(tipo === "modelo" ? "Na fila: o Mac baixa e a máquina refaz com a nossa voz." : tipo === "biblioteca" ? "Na fila: o robô guarda o vídeo inteiro na biblioteca." : "Na fila do robô do Mac. Os cortes aparecem depois que ele baixar os trechos.", "youtube.yml", {acao: tipo, links});
+  });
 
 document.addEventListener("click", e => {
+  const at = e.target.closest("#atualizar");
+  if (at) { e.preventDefault(); toast("Atualizando…"); carregar(); return; }
   const b = e.target.closest("[data-acao]"); if (!b) return;
+  e.preventDefault();
   const {acao, id, login, nome, n} = b.dataset, m = todos().find(x => x.id === id), canal = S.canal;
-  if (acao === "youtube") return dialogo(`<form><h2 id="dlgTitulo">Cortes de vídeos do YouTube</h2><p>Cole links de vídeos ou lives (um por linha). O robô do seu Mac baixa só os melhores trechos (os mais repetidos pelo público) e a máquina faz os Shorts. O Mac precisa estar ligado.</p><div class="campo"><label for="dlgYt">Links do YouTube</label><textarea id="dlgYt" rows="4" placeholder="https://www.youtube.com/watch?v=…" style="width:100%;font:inherit;padding:10px;border-radius:10px"></textarea></div><div class="campo"><label><input type="checkbox" id="dlgBib"> Guardar inteiro na biblioteca de imagens (trailers oficiais, pra usar de fundo nos vídeos narrados)</label></div>${botoesDlg("Mandar pro robô")}</form>`,
-    d => { const links = d.querySelector("#dlgYt").value.split(/\s+/).filter(l => /(youtube\.com|youtu\.be)\//.test(l)).join(" ");
-           if (!links) return toast("Nenhum link do YouTube encontrado.");
-           const bib = d.querySelector("#dlgBib").checked;
-           pedir(bib ? "Na fila do robô: ele guarda o vídeo inteiro na biblioteca." : "Na fila do robô do Mac. Os cortes aparecem depois que ele baixar os trechos.", "youtube.yml", {acao: bib ? "biblioteca" : "pedir", links}); });
-  if (acao === "post-x") return dialogo(`<form><h2 id="dlgTitulo">Transformar posts do X em Shorts</h2><p>Cole um ou mais links de posts sobre GTA 6 (um por linha). A máquina lê o post, escreve a narração com as próprias palavras, dá o crédito do autor e posta. Vazamento e conteúdo adulto são barrados.</p><div class="campo"><label for="dlgLinks">Links dos posts</label><textarea id="dlgLinks" rows="4" placeholder="https://x.com/RockstarGames/status/…" style="width:100%;font:inherit;padding:10px;border-radius:10px"></textarea></div>${botoesDlg("Fazer os Shorts")}</form>`,
-    d => { const links = d.querySelector("#dlgLinks").value.split(/\s+/).filter(l => /(x|twitter)\.com\/.+\/status\//.test(l)).join(" ");
-           if (!links) return toast("Nenhum link de post do X encontrado.");
-           pedir("Pedido enviado. Os Shorts dos posts ficam prontos em uns 10 minutos.", "noticias.yml", {links}); });
-  if (acao === "rodar") return pedir("Pedido enviado. A máquina começa em instantes e o Short aparece em uns 15 minutos.", "rodada.yml", {});
+  if (acao === "mandar") return dlgMandar();
+  if (acao === "rodar") return pedir("Pedido enviado. A máquina começa em instantes; acompanhe na aba do GitHub.", "rodada.yml", {});
   if (acao === "numeros") return pedir("Atualizando as views. Leva cerca de 1 minuto.", "painel.yml", {acao: "numeros"});
+  if ((acao === "postei" || acao === "descartar" || acao === "descartar-pronto") && !m) return toast("Esse vídeo não está mais na lista. Atualize a página.");
   if (acao === "postei") return dialogo(`<form><h2 id="dlgTitulo">Já postou?</h2><p>Cole o link do vídeo no YouTube pra o painel mostrar as views. Se não tiver o link agora, pode deixar em branco.</p><div class="campo"><label for="dlgLink">Link do vídeo (opcional)</label><input id="dlgLink" placeholder="https://youtube.com/shorts/…" autocomplete="off"></div>${botoesDlg("Marcar como postado")}</form>`,
     d => pedir("Marcado como postado.", "painel.yml", {acao: "postei", id, quando: d.querySelector("#dlgLink").value.trim()}, id, "Marcando…"));
-  if (acao === "descartar-pronto") return dialogo(`<form><h2 id="dlgTitulo">Descartar este vídeo?</h2><p>“${esc(m.titulo)}” sai da lista e o arquivo é apagado.</p>${botoesDlg("Descartar", true)}</form>`,
+  if (acao === "descartar-pronto") return dialogo(`<form><h2 id="dlgTitulo">${m.status === "aguardando_cota" ? "Cancelar este agendamento?" : "Descartar este vídeo?"}</h2><p>“${esc(m.titulo || m.id)}” sai da lista.</p>${botoesDlg("Descartar", true)}</form>`,
     () => pedir("Vídeo descartado.", "painel.yml", {acao: "descartar", id}, id, "Descartando…"));
-  if (acao === "descartar") return dialogo(`<form><h2 id="dlgTitulo">Apagar do YouTube?</h2><p>“${esc(m.titulo)}” será apagado do canal. Não dá para desfazer.</p>${botoesDlg("Apagar vídeo", true)}</form>`,
+  if (acao === "descartar") return dialogo(`<form><h2 id="dlgTitulo">Apagar do YouTube?</h2><p>“${esc(m.titulo || m.id)}” será apagado do canal. Não dá para desfazer.</p>${botoesDlg("Apagar vídeo", true)}</form>`,
     () => pedir("Apagando o vídeo do YouTube.", "painel.yml", {acao: "descartar", id}, id, "Apagando…"));
-  if (acao === "descartar-fila") return pedir("Momento descartado. Ele sai da fila em cerca de 1 minuto.", "painel.yml", {acao: "descartar", id}, null);
-  if (acao === "priorizar") return pedir("Feito: esse momento vira o próximo Short.", "painel.yml", {acao: "priorizar", id});
+  if (acao === "descartar-fila") return pedir("Momento descartado. Ele sai da fila em cerca de 1 minuto.", "painel.yml", {acao: "descartar", id}, id, "Descartando…");
+  if (acao === "priorizar") return pedir("Feito: esse momento vira o próximo Short.", "painel.yml", {acao: "priorizar", id}, id, "Subindo na fila…");
   if (acao === "bloquear") return dialogo(`<form><h2 id="dlgTitulo">Bloquear ${esc(nome)}?</h2><p>A máquina para de cortar os vídeos dele. Os vídeos que já foram postados continuam no ar.</p>${botoesDlg("Bloquear", true)}</form>`,
     () => pedir(`${nome} bloqueado.`, "painel.yml", {acao: "bloquear", login}));
   if (acao === "desbloquear") return pedir("Desbloqueado. A máquina volta a cortar esse streamer.", "painel.yml", {acao: "desbloquear", login});
@@ -680,25 +815,35 @@ document.addEventListener("submit", e => {
   }
   if (e.target.id === "formStreamer") {
     e.preventDefault(); const login = $("#stLogin").value.trim().toLowerCase(), nome = $("#stNome").value.trim() || login;
+    if (!login) return;
     pedir(`${nome} entra na lista do ${CANAIS[S.canal].nome} em cerca de 1 minuto.`, "painel.yml", {acao: "adicionar", canal: S.canal, login, nome});
     e.target.reset();
   }
 });
 document.addEventListener("click", async e => {
   const c = e.target.closest("[data-copiar]");
-  if (c) { const m = todos().find(x => x.id === c.dataset.id); const campo = c.dataset.copiar;
-    const texto = campo === "titulo" ? m.titulo : (m.descricao || "") + (m.tags ? "\n\n" + m.tags.join(", ") : "");
-    toast(await copiar(texto) ? (campo === "titulo" ? "Título copiado." : "Descrição copiada.") : "Não deu pra copiar. Segure e copie o texto.");
+  if (c) { const m = todos().find(x => x.id === c.dataset.id); if (!m) return toast("Vídeo não encontrado. Atualize a página.");
+    const texto = c.dataset.copiar === "titulo" ? (m.titulo || "") : (m.descricao || "") + (m.tags?.length ? "\n\n" + m.tags.join(", ") : "");
+    toast(await copiar(texto) ? (c.dataset.copiar === "titulo" ? "Título copiado." : "Descrição copiada.") : "Não deu pra copiar. Segure e copie o texto.");
   }
   if (e.target.id === "btnSair") { guardar("cc_token", null); toast("Desconectado."); carregar(); }
-  if (e.target.closest("[data-aba]")) { S.aba = e.target.closest("[data-aba]").dataset.aba; desenhar(); }
-  if (e.target.closest(".trocar button")) { S.canal = e.target.closest(".trocar button").dataset.canal; guardar("cc_canal", S.canal); desenhar(); }
+  const ab = e.target.closest("[data-aba]");
+  if (ab) { S.aba = ab.dataset.aba; guardar("cc_aba", S.aba); desenhar(true); }
+  const tr = e.target.closest(".trocar button");
+  if (tr) { S.canal = tr.dataset.canal; guardar("cc_canal", S.canal); desenhar(); }
   if (e.target === $("#fundoDialogo")) fecharDialogo();
 });
-document.addEventListener("keydown", e => { if (e.key === "Escape") fecharDialogo(); if (e.key === "/" && document.activeElement.tagName !== "INPUT") { e.preventDefault(); $("#busca").focus(); } });
-$("#busca").addEventListener("input", e => { S.busca = e.target.value.trim().toLowerCase(); desenhar(); $("#busca").focus(); });
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") fecharDialogo();
+  if (e.key === "/" && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) { e.preventDefault(); $("#busca").focus(); }
+});
+let buscaT;
+$("#busca").addEventListener("input", e => {
+  clearTimeout(buscaT);
+  buscaT = setTimeout(() => { S.busca = e.target.value.trim().toLowerCase(); desenhar(true); }, 180);
+});
 window.addEventListener("hashchange", () => { desenhar(); window.scrollTo(0, 0); });
-setInterval(() => { if (!S.demo && document.visibilityState === "visible") carregar(); }, 5 * 60e3);
+setInterval(() => { if (!S.demo && document.visibilityState === "visible" && !document.querySelector(".fundo-dialogo.aberto")) carregar(); }, 3 * 60e3);
 
 /* ---------- dados de exemplo ---------- */
 function thumbDemo(m) {
@@ -708,33 +853,36 @@ function thumbDemo(m) {
 }
 function montarDemo() {
   S.cfg = {bloqueados: ["nobru"], canais: [
-    {id: "br", modo: "revisao", ativo: true, horarios: ["12:00", "18:00", "21:00"], horario_compilado: "19:30", streamers: [
+    {id: "br", postar: "automatico", ativo: true, horarios: ["12:00", "15:00", "18:00", "21:00"], streamers: [
       {login: "loud_coringa", nome: "Coringa"}, {login: "paulinholokobr", nome: "Paulinho O Loko"}, {login: "luquet4", nome: "LuquEt4"},
       {login: "cerol", nome: "Cerol"}, {login: "alanzoka", nome: "Alanzoka"}, {login: "jonvlogs", nome: "Jon Vlogs"}, {login: "nobru", nome: "Nobru"}]},
-    {id: "en", modo: "revisao", ativo: false, horarios: ["13:00", "17:00", "20:00"], horario_compilado: "19:00", streamers: [
-      {login: "kaicenat", nome: "Kai Cenat"}, {login: "xqc", nome: "xQc"}, {login: "jasontheween", nome: "JasonTheWeen"}, {login: "caseoh_", nome: "CaseOh"}]}]};
+    {id: "en", postar: "revisao", ativo: false, horarios: [], streamers: [
+      {login: "kaicenat", nome: "Kai Cenat"}, {login: "xqc", nome: "xQc"}]}]};
   const h = x => new Date(Date.now() - x * 36e5).toISOString();
   const br = [
-    ["Coringa achou que tava sozinho no GTA 6... até isso acontecer", "loud_coringa", 2, 18420, 1630, "private", null, "SOCORRO"],
-    ["Paulinho tentou roubar o banco e esqueceu UM detalhe", "paulinholokobr", 7, 94210, 8120, "public", null, "NÃO!"],
-    ["O Alanzoka perdeu a cabeça com a polícia de Leonida", "alanzoka", 11, 41800, 3300, "private", h(-5), "KKKKK"],
-    ["Cerol foi atropelado 3 vezes em 10 segundos", "cerol", 26, 236000, 21400, "public", null, "INSANO"],
-    ["Jon Vlogs viu o mapa do GTA 6 pela primeira vez", "jonvlogs", 31, 58100, 4100, "public", null, "GIGANTE"],
-    ["LuquEt4 e o jacaré mais perigoso de Vice City", "luquet4", 50, 129000, 11800, "public", null, "CORRE"],
-    ["Coringa descobriu o segredo do posto de gasolina", "loud_coringa", 74, 77300, 6400, "public", null, "SEGREDO"],
-  ].map((x, i) => ({id: "d" + i, tipo: "short", status: i < 2 ? "pronto" : "postado", titulo: x[0], streamer: x[1], feito_em: h(x[2]), postado_em: i < 2 ? null : h(x[2]), views: i < 2 ? 0 : x[3], likes: i < 2 ? 0 : x[4],
-                    privacidade: "public", gancho: x[7], youtube_id: i < 2 ? "" : "x", duracao: 28 + i * 4, video_url: "#", thumb_url: "#",
+    ["Coringa achou que tava sozinho no GTA 6... até isso acontecer", "loud_coringa", -3, 0, 0, "SOCORRO"],
+    ["Paulinho tentou roubar o banco e esqueceu UM detalhe", "paulinholokobr", -6, 0, 0, "NÃO!"],
+    ["O Alanzoka perdeu a cabeça com a polícia de Leonida", "alanzoka", 11, 41800, 3300, "KKKKK"],
+    ["Cerol foi atropelado 3 vezes em 10 segundos", "cerol", 26, 236000, 21400, "INSANO"],
+    ["Jon Vlogs viu o mapa do GTA 6 pela primeira vez", "jonvlogs", 31, 58100, 4100, "GIGANTE"],
+    ["LuquEt4 e o jacaré mais perigoso de Vice City", "luquet4", 50, 129000, 11800, "CORRE"],
+  ].map((x, i) => ({id: "d" + i, tipo: "short", status: "postado", titulo: x[0], streamer: x[1],
+                    publicar_em: h(x[2]), postado_em: h(Math.max(x[2], 1)), views: x[3], likes: x[4],
+                    privacidade: x[2] < 0 ? "private" : "public", gancho: x[5], youtube_id: "dQw4w9WgXcQ", duracao: 28 + i * 4,
                     descricao: x[0] + "\n\n🎮 Live original: https://twitch.tv/" + x[1], tags: ["gta 6", "gta vi"]}));
-  br.push({id: "top10_d", tipo: "top10", status: "postado", titulo: "TOP 10 momentos mais insanos de GTA 6 da semana (Cerol, Coringa, Paulinho)", streamer: "*", streamers: ["cerol", "loud_coringa", "paulinholokobr"], postado_em: h(40), views: 31200, likes: 2900, privacidade: "public", gancho: "TOP 10", youtube_id: ""});
-  br.push({id: "dia_d", tipo: "dia", status: "pronto", video_url: "#", thumb_url: "#", descricao: "Compilado", titulo: "Os melhores momentos de GTA 6 do dia 11/11 (Alanzoka, LuquEt4)", streamer: "*", streamers: ["alanzoka", "luquet4"], postado_em: h(20), views: 9800, likes: 870, privacidade: "private", gancho: "MELHORES", youtube_id: ""});
+  br.push({id: "narr_d", tipo: "narrado", status: "postado", titulo: "Vice City x Miami de verdade: os lugares reais do GTA 6", nome: "Corte City", publicar_em: h(-20), views: 0, likes: 0, youtube_id: "dQw4w9WgXcQ", gancho: "REAL"});
   const f = [
-    ["paulinholokobr", 9, 4120, ["ELE PULOU DO PRÉDIO KKKKK", "paulinho voando", "não acredito nisso"], true],
-    ["loud_coringa", 6, 2890, ["coringa vs policia", "a fuga mais burra"], false],
-    ["cerol", 4, 1730, ["kkkkkkk", "o carro explodiu"], false],
-    ["alanzoka", 3, 960, ["alan gritando", "susto do ano"], false],
-  ].map((x, i) => ({id: "f" + i, status: "novo", streamer: x[0], n_clipes: x[1], views: x[2], titulos_chat: x[3], prioridade: x[4], score: x[2] * (1 + .6 * (x[1] - 1)), criado_em: h(i + 1), video_id: "1", clipe_url: "https://twitch.tv"}));
+    ["paulinholokobr", 9, 4120, ["ELE PULOU DO PRÉDIO KKKKK", "paulinho voando"], true, 6],
+    ["loud_coringa", 6, 2890, ["coringa vs policia", "a fuga mais burra"], false, 4],
+    ["alanzoka", 3, 960, ["alan gritando", "susto do ano"], false, 2],
+  ].map((x, i) => ({id: "f" + i, status: "novo", streamer: x[0], n_clipes: x[1], views: x[2], titulos_chat: x[3], prioridade: x[4], clipadores: x[5], score: x[2] * (1 + .6 * (x[1] - 1)), criado_em: h(i + 1), video_id: "1", clipe_url: "https://twitch.tv"}));
   S.dados.br = {momentos: Object.fromEntries([...br, ...f].map(m => [m.id, m]))};
   S.dados.en = {momentos: {}};
+  S.robo = {momentos: {
+    tk_demo: {id: "tk_demo", modo: "modelo", status: "modelo_pendente", plataforma: "tiktok", titulo: "Every GTA 6 Lover…", canal_nome: "exemplo", views_yt: 8700000, pedido_em: h(2), link: "https://tiktok.com"},
+    live_demo: {id: "live_demo", status: "esperando", origem: "live", titulo: "GTA 6 CHEGOU! LIVE COMPLETA", canal_nome: "Bistecone", views_yt: 735000, pedido_em: h(3), link: "https://youtube.com"},
+  }};
+  S.runs = [{name: "Rodada da máquina", status: "completed", conclusion: "success", created_at: h(1), html_url: "https://github.com/" + REPO + "/actions"}];
 }
 
 carregar();
